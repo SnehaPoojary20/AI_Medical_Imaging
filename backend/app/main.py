@@ -1,37 +1,40 @@
+
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.config import(
+from app.config import (
     APP_NAME,
     APP_VERSION,
-    FRONTEND_ORIGIN
+    FRONTEND_ORIGIN,
 )
-
 from app.database import init_db
 from app.schemas import HealthResponse
 
 
 @asynccontextmanager
-async def lifeSpan(app:FastAPI):
+async def lifespan(app: FastAPI):
     """Initialize application resources at startup."""
     init_db()
     yield
 
 
 app = FastAPI(
-    title= APP_NAME,
+    title=APP_NAME,
     version=APP_VERSION,
-     description=(
+    description=(
         "An educational prototype for medical image analysis "
         "and AI-assisted diagnosis. Not intended for clinical use."
     ),
     lifespan=lifespan,
 )
 
+
+# Allow requests from the local React frontend.
 app.add_middleware(
     CORSMiddleware,
-     allow_origins=[
+    allow_origins=[
         FRONTEND_ORIGIN,
         "http://127.0.0.1:5173",
     ],
@@ -41,7 +44,7 @@ app.add_middleware(
 )
 
 
-@app.get("/get",tags=["General"])
+@app.get("/", tags=["General"])
 def root():
     """Return basic application information."""
     return {
@@ -52,9 +55,9 @@ def root():
 
 
 @app.get(
-     "/api/health",
-     response_model=HealthResponse,
-      tags=["Health"],
+    "/api/health",
+    response_model=HealthResponse,
+    tags=["Health"],
 )
 def health_check():
     """Check whether the API is responding."""
