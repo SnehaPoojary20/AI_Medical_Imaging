@@ -1,0 +1,12 @@
+
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+pillow
+numpy
+pydicom
+scikit-image
+scikit-learn
+pytest
+httpx
