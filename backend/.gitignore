@@ -1,0 +1,68 @@
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python packaging
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking and linting
+.mypy_cache/
+.ruff_cache/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploaded files and generated outputs
+uploads/
+data/
+temp/
+tmp/
+*.log
+
+# Model weights and generated ML artifacts
+models/*
+!models/.gitkeep
+*.pth
+*.pt
+*.ckpt
+*.onnx
+*.h5
+*.hdf5
+*.pkl
+*.joblib
+*.safetensors
+
+# Medical files
+*.dcm
+*.dicom
+
+# DVC cache
+.dvc/cache/
+
+# Editor files
+.vscode/
+.idea/
