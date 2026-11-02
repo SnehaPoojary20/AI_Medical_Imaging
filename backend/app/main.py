@@ -1,4 +1,3 @@
-
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -10,7 +9,11 @@ from app.config import (
     FRONTEND_ORIGIN,
 )
 from app.database import init_db
-from app.schemas import HealthResponse
+
+from app.routes.analysis import router as analysis_router
+from app.routes.reviews import router as reviews_router
+from app.routes.dicom import router as dicom_router
+from app.routes.health import router as health_router
 
 
 @asynccontextmanager
@@ -31,7 +34,6 @@ app = FastAPI(
 )
 
 
-# Allow requests from the local React frontend.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -44,6 +46,12 @@ app.add_middleware(
 )
 
 
+app.include_router(analysis_router)
+app.include_router(reviews_router)
+app.include_router(dicom_router)
+app.include_router(health_router)
+
+
 @app.get("/", tags=["General"])
 def root():
     """Return basic application information."""
@@ -54,15 +62,11 @@ def root():
     }
 
 
-@app.get(
-    "/api/health",
-    response_model=HealthResponse,
-    tags=["Health"],
-)
+@app.get("/api/health", tags=["Health"])
 def health_check():
     """Check whether the API is responding."""
-    return HealthResponse(
-        status="ok",
-        app_name=APP_NAME,
-        version=APP_VERSION,
-    )
+    return {
+        "status": "ok",
+        "app_name": APP_NAME,
+        "version": APP_VERSION,
+    }
